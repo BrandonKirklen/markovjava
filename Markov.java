@@ -114,18 +114,46 @@ public class Markov {
 		newPhrase.add(nextWord);
 		
 		// Keep looping through the words until we've reached the end
-		while (nextWord.charAt(nextWord.length()-1) != '.' ) {
-			Vector<String> wordSelection = markovChain.get(nextWord);
-             
-            try {
-                int wordSelectionLen = wordSelection.size();
-                nextWord = wordSelection.get(rnd.nextInt(wordSelectionLen));
-                newPhrase.add(nextWord);
-            } 
-            catch (Exception e) {
+        try {
+            while ( nextWord.charAt(nextWord.length()-1) != '.' 
+                    && nextWord.charAt(nextWord.length()-1) != ','
+                    && nextWord.charAt(nextWord.length()-1) != '?'
+                    ) {
+
+                if ( nextWord.compareTo("") != 0 ) {
+                    Vector<String> wordSelection = markovChain.get(nextWord);
+            
+                    //try {
+                    int wordSelectionLen = wordSelection.size();
+                    nextWord = wordSelection.get(rnd.nextInt(wordSelectionLen));
+
+                    if ( nextWord.compareTo("") != 0 ) {
+                        newPhrase.add(nextWord);
+                    }
+                    else {
+                        if ( wordSelectionLen <= 1 ) {
+                            break;
+                        }
+                        while ( nextWord.compareTo("")==0 ) {
+                            nextWord = wordSelection.get(rnd.nextInt(wordSelectionLen));
+                        }
+
+                    }
+                    //} 
+                    //catch (Exception e) {
+                    //}
+                }
+                else {
+                    break;
+                }
                 
             }
-		}
+        }
+        catch (Exception e) {
+            System.out.println("Exception caught: " + e);
+            System.out.println("Next word was: [" + nextWord + "]");
+        }
+
 		
         String newPhraseString = newPhrase.toString();
         String strToOutput = newPhraseString.substring(1, newPhraseString.length()-1);

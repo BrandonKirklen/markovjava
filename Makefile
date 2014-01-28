@@ -1,6 +1,7 @@
-all:	
+all:
+	javac FileFormatter.java
 	javac Markov.java
 
 clean:	
-	rm -rf Markov.class
+	rm -rf FileFormatter.class Markov.class
 
