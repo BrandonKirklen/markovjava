@@ -32,4 +32,3 @@ Preferably, input files are formatted with the following caveats:<br/>
     </ul>
 </li></ul>
 
-Y
