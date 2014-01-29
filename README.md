@@ -21,6 +21,7 @@ This would generate 10 sentences, unformatted plaintext, using the file "cthulhu
 <hr/>
 <b>About Input Files:</b><br/>
 
+Input files can be fairly tricky and unless you follow certain guidelines you might break the program!<br/>
 Preferably, input files are formatted with the following caveats:<br/>
 <ul>
 <li>One sentence per line</li>
@@ -30,3 +31,5 @@ Preferably, input files are formatted with the following caveats:<br/>
     <li>Question Mark (?)</li>
     </ul>
 </li></ul>
+
+Y
