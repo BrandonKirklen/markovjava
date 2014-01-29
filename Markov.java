@@ -11,8 +11,10 @@ import java.nio.charset.Charset;
 
 public class Markov {
 	// Hashmap
-	public static Hashtable<String, Vector<String>> markovChain = new Hashtable<String, Vector<String>>();
-	static Random rnd = new Random();
+	//public static Hashtable<String, Vector<String>> markovChain = new Hashtable<String, Vector<String>>();
+	public static Hashtable<String, ArrayList<String>> markovChain = new Hashtable<String, ArrayList<String>>();
+	public static ArrayList<String> generatedSentences = new ArrayList<String>();
+    static Random rnd = new Random();
 
     /* 
      * format codes:
@@ -32,8 +34,8 @@ public class Markov {
         int fileArgsStart = 2;
 
         // Create the first two entries (k:_start, k:_end)
-        markovChain.put("_start", new Vector<String>());
-        markovChain.put("_end", new Vector<String>());
+        markovChain.put("_start", new ArrayList<String>());
+        markovChain.put("_end", new ArrayList<String>());
         
         for (int i=fileArgsStart; i<args.length; i++) {
         
@@ -51,10 +53,16 @@ public class Markov {
             reader0.close();
         }
 
+        //System.out.println("Files successfully added\nAttempting sentence generation...");
 
         while (sentences > 0 ) {
-            generateSentence();
+            //System.out.println("..." + sentences + " left to generate");
+            generatedSentences.add( generateSentence() );
             sentences--;
+        }
+
+        for (int i=0; i<generatedSentences.size(); i++) {
+            System.out.println(generatedSentences.get(i));
         }
 	}
 	
@@ -76,27 +84,42 @@ public class Markov {
 			// Add the start and end words to their own
 			if (i == 0) {
 				
-                Vector<String> startWords = markovChain.get("_start");
+                //Vector<String> startWords = markovChain.get("_start");
+                ArrayList<String> startWords = markovChain.get("_start");
 				startWords.add(words[i]);
 				
-				Vector<String> suffix = markovChain.get(words[i]);
+				//Vector<String> suffix = markovChain.get(words[i]);
+				ArrayList<String> suffix = markovChain.get(words[i]);
+
 				if (suffix == null) {
 					
                     if ( i+1 < words.length ) {
-                        suffix = new Vector<String>();
+
+                        //suffix = new Vector<String>();
+                        suffix = new ArrayList<String>();
+
                         suffix.add(words[i+1]);
                         markovChain.put(words[i], suffix);
                     }
 				}
 				
 			} else if (i == words.length-1) {
-				Vector<String> endWords = markovChain.get("_end");
+
+				//Vector<String> endWords = markovChain.get("_end");
+				ArrayList<String> endWords = markovChain.get("_end");
+
 				endWords.add(words[i]);
 				
 			} else {	
-				Vector<String> suffix = markovChain.get(words[i]);
+
+				//Vector<String> suffix = markovChain.get(words[i]);
+				ArrayList<String> suffix = markovChain.get(words[i]);
+
 				if (suffix == null) {
-					suffix = new Vector<String>();
+
+					//suffix = new Vector<String>();
+					suffix = new ArrayList<String>();
+
 					suffix.add(words[i+1]);
 					markovChain.put(words[i], suffix);
 				} else {
@@ -111,15 +134,18 @@ public class Markov {
 	/*
 	 * Generate a markov phrase
 	 */
-	public static void generateSentence() {
+	//public static void generateSentence() {
+	public static String generateSentence() {
 		// Vector to hold the phrase
-		Vector<String> newPhrase = new Vector<String>();
+		//Vector<String> newPhrase = new Vector<String>();
+		ArrayList<String> newPhrase = new ArrayList<String>();
 		
 		// String for the next word
 		String nextWord = "";
 				
 		// Select the first word
-		Vector<String> startWords = markovChain.get("_start");
+		//Vector<String> startWords = markovChain.get("_start");
+		ArrayList<String> startWords = markovChain.get("_start");
 		int startWordsLen = startWords.size();
 
 		nextWord = startWords.get(rnd.nextInt(startWordsLen));
@@ -130,10 +156,12 @@ public class Markov {
             while ( nextWord.charAt(nextWord.length()-1) != '.' 
                     && nextWord.charAt(nextWord.length()-1) != ','
                     && nextWord.charAt(nextWord.length()-1) != '?'
+                    && nextWord.charAt(nextWord.length()-1) != ':'
                     ) {
 
                 if ( nextWord.compareTo("") != 0 ) {
-                    Vector<String> wordSelection = markovChain.get(nextWord);
+                    //Vector<String> wordSelection = markovChain.get(nextWord);
+                    ArrayList<String> wordSelection = markovChain.get(nextWord);
             
                     //try {
                     int wordSelectionLen = wordSelection.size();
@@ -158,6 +186,8 @@ public class Markov {
                 else {
                     break;
                 }
+
+                //System.out.println("......checking nextWord.charAt(nextWord.length()-1): [" + nextWord.charAt(nextWord.length()-1) + "]");
                 
             }
         }
@@ -165,37 +195,25 @@ public class Markov {
             //System.out.println("Exception caught: " + e);
             //System.out.println("Next word was: [" + nextWord + "]");
         }
-
 		
         String newPhraseString = newPhrase.toString();
         String strToOutput = newPhraseString.substring(1, newPhraseString.length()-1);
         strToOutput = strToOutput.replace(",", "");
 
-        /*
-        if ( formatCode == FORMATCODE_NONE ) { 
-            System.out.println(strToOutput);
-        }
-        else if ( formatCode == FORMATCODE_NONE ) { 
-            System.out.println(strToOutput + "<br/>");
-        }
-        else {
-            System.out.println(strToOutput);
-        }
-        */
-
-        printFormattedString(strToOutput);
+        //printFormattedString(strToOutput);
+        return printFormattedString(strToOutput);
 	}
 
 
-    public static void printFormattedString(String str) {
+    public static String printFormattedString(String str) {
+        String s = str;
         if ( formatCode == FORMATCODE_NONE ) { 
-            System.out.println(str);
         }
         else if ( formatCode == FORMATCODE_HTML ) { 
-            System.out.println(str + "<br/>");
+            s = s + "<br/>";
         }
         else {
-            System.out.println(str);
         }
+        return s;
     }
 }
