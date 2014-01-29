@@ -150,14 +150,14 @@ public class Markov {
             }
         }
         catch (Exception e) {
-            System.out.println("Exception caught: " + e);
-            System.out.println("Next word was: [" + nextWord + "]");
+            //System.out.println("Exception caught: " + e);
+            //System.out.println("Next word was: [" + nextWord + "]");
         }
 
 		
         String newPhraseString = newPhrase.toString();
         String strToOutput = newPhraseString.substring(1, newPhraseString.length()-1);
         strToOutput = strToOutput.replace(",", "");
-		System.out.println(strToOutput);
+		System.out.println(strToOutput + "<br/>");
 	}
 }
