@@ -17,3 +17,16 @@ Let me provide you an example of how it would work:<br/>
 
 <b>$ java Markov 10 0 cthulhu.txt</b><br/>
 This would generate 10 sentences, unformatted plaintext, using the file "cthulhu.txt" as an input source<br/>
+
+<hr/>
+<b>About Input Files:</b><br/>
+
+Preferably, input files are formatted with the following caveats:<br/>
+<ul>
+<li>One sentence per line</li>
+<li>Sentences ending with one of the following delimeters:
+    <ul><li>Period (.)</li>
+    <li>Comma (,)</li>
+    <li>Question Mark (?)</li>
+    </ul>
+</li></ul>
