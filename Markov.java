@@ -13,17 +13,29 @@ public class Markov {
 	// Hashmap
 	public static Hashtable<String, Vector<String>> markovChain = new Hashtable<String, Vector<String>>();
 	static Random rnd = new Random();
-	
+
+    /* 
+     * format codes:
+     * 0 - no format
+     * 1 - simple HTML trailing <br/>
+     */
+    public static final int FORMATCODE_NONE = 0;
+    public static final int FORMATCODE_HTML = 1;
+    
+    public static int formatCode = FORMATCODE_NONE;
+
 	public static void main(String[] args) throws IOException {
         
         
         int sentences = Integer.parseInt(args[0]);
+        formatCode = Integer.parseInt(args[1]);
+        int fileArgsStart = 2;
 
         // Create the first two entries (k:_start, k:_end)
         markovChain.put("_start", new Vector<String>());
         markovChain.put("_end", new Vector<String>());
         
-        for (int i=1; i<args.length; i++) {
+        for (int i=fileArgsStart; i<args.length; i++) {
         
             String filePath0 = args[i];
             FileInputStream file_in0 = new FileInputStream(filePath0);
@@ -158,6 +170,32 @@ public class Markov {
         String newPhraseString = newPhrase.toString();
         String strToOutput = newPhraseString.substring(1, newPhraseString.length()-1);
         strToOutput = strToOutput.replace(",", "");
-		System.out.println(strToOutput + "<br/>");
+
+        /*
+        if ( formatCode == FORMATCODE_NONE ) { 
+            System.out.println(strToOutput);
+        }
+        else if ( formatCode == FORMATCODE_NONE ) { 
+            System.out.println(strToOutput + "<br/>");
+        }
+        else {
+            System.out.println(strToOutput);
+        }
+        */
+
+        printFormattedString(strToOutput);
 	}
+
+
+    public static void printFormattedString(String str) {
+        if ( formatCode == FORMATCODE_NONE ) { 
+            System.out.println(str);
+        }
+        else if ( formatCode == FORMATCODE_HTML ) { 
+            System.out.println(str + "<br/>");
+        }
+        else {
+            System.out.println(str);
+        }
+    }
 }
